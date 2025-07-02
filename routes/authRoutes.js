@@ -1,9 +1,16 @@
-import express from 'express'
-import { loginController, registerController } from '../controllers/authControllers.js';
+import express from "express";
+import jwt from "jsonwebtoken";
+import {
+  loginController,
+  registerController,
+} from "../controllers/authControllers.js";
 
 const router = express.Router();
 
-router.post('/register', registerController)
-router.post('/login', loginController)
+router.post("/register", registerController);
+router.post(
+  "/login",
+  loginController
+);
 
 export default router;

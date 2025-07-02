@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import { User } from "../models/userModels.js";
 import { splitFullName } from "../utils/tools.js";
 import bcrypt from 'bcrypt';
@@ -38,6 +39,7 @@ export const loginController = async (req, res) => {
       .json({ message: "Email and Password are required!" });
   }
   try {
+
     const existingUser = await User.findOne({ email: email });
 
     if (!existingUser) {
@@ -51,13 +53,15 @@ export const loginController = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password!" });
     }
+    const token = jwt.sign({ email: User.email }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION });
+    
     res.status(200).json({
       message: "Login successful",
+      token: token,
       data: {
         userId: existingUser._id,
         fullName: existingUser.fullName,
         email: existingUser.email,
-        phone: existingUser.phone,
       },
     });
   } catch (error) {
