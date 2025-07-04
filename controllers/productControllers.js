@@ -103,3 +103,37 @@ export const deleteProductById = async (req, res) => {
     }
 };
 
+export const updateProductById = async (req, res) => {
+  const productId = req.params.id;
+  const updates = req.body;
+
+  if (!productId) {
+    return res.status(400).json({
+      message: "Product ID is required",
+    });
+  }
+
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      updates,
+      { new: true, runValidators: true }
+    );
+    if (!updatedProduct) {
+      return res.status(404).json({
+        message: "Product not found",
+      });
+    }
+    res.status(200).json({
+      message: "Product updated successfully",
+      data: updatedProduct,
+    });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
