@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllUsers, getUserById, updateUser } from "../controllers/userControllers.js";
+import { deleteUser, getAllUsers, getUserById, updateUser } from "../controllers/userControllers.js";
 
 const router = express.Router();
 
@@ -13,8 +13,6 @@ router.get("/getuser/:id", getUserById);
 router.patch("/:id", updateUser);
 
 // delete user
-router.delete("/:id", (req, res) => {
-  res.send("user deleted by ID: ");
-});
+router.delete("/:id", deleteUser);
 
 export default router;
